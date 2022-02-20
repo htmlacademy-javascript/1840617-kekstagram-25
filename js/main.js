@@ -12,10 +12,10 @@ const getRandomNumber = function (min, max) {
 getRandomNumber(firstNumber, secondNumber);
 
 const textLine = 'Some long, very long text Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas a quos at, architecto consectetur illum nemo voluptate cupiditate tempore dolore dolor quasi deserunt, enim animi? Nobis eveniet autem cupiditate quibusdam!';
-const MAX_SYMBOLS = 140;
+const MAX_SYMBOLS =140;
 
 const isCorrectLength = function (text, maxLength) {
-  return text.maxLength < maxLength;
+  return text.length < maxLength;
 };
 
 isCorrectLength(textLine, MAX_SYMBOLS);
