@@ -1,12 +1,4 @@
-/*
-const textLine = 'Some long, very long text Lorem ipsum dolor sit ';
-const MAX_SYMBOLS = 140;
-const isCorrectLength = function (text, maxLength) {
-  return text.length < maxLength;
-};
-*/
-
-const USERS_COUNT = 40;
+const USERS_COUNT = 25;
 const commentsArr = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -22,7 +14,6 @@ const commentsArr = [
 const commentatorArr = ['Алена', 'Наталья', 'Роман', 'Оксана', 'Василий', 'Борис', 'Sam', 'Евграф', 'Сигизмунд', 'Ольга', 'Kat'];
 
 const getRandomInt = (min, max) => {
-  if (min < 0 || max < 0) { return -1; }
   if (min > max) { [min, max] = [max, min]; }
   return Math.floor((Math.random() * (max - min + 1) + min));
 };
@@ -47,7 +38,6 @@ const getNoRepeatNumbers = (start, end) => {
 
 
 const getComments = (number) => {
-  if (number <= 0) { return 'no commets'; }
   const commentsArray = [];
   for (let i = 0; i < number; i++) {
     const comment = {};
@@ -63,14 +53,12 @@ const getComments = (number) => {
 };
 
 const getGaleryArray = function () {
-  if (USERS_COUNT <= 0) { return 'No Users'; }
   const postsArray = [];
-  const iDs = getNoRepeatNumbers(1, USERS_COUNT);
   const photoNumbers = getNoRepeatNumbers(1, USERS_COUNT);
-  for (let i = 0; i < iDs.length; i++) {
+  for (let i = 0; i < USERS_COUNT; i++) {
     postsArray[i] = {};
     const post = postsArray[i];
-    post.id = iDs[i];
+    post.id = i + 1;
     post.url = `photos/${photoNumbers[i]}.jpg`;
     post.description = 'Какой замечательный вид';
     post.likes = getRandomInt(15, 200);
