@@ -18,24 +18,13 @@ const getRandomInt = (min, max) => {
   return Math.floor((Math.random() * (max - min + 1) + min));
 };
 
-const getNoRepeatNumbers = (start, end) => {
-  if (start > end) { [start, end] = [end, start]; }
-  if (start < 0 || end < 0) { return -1; }
-  const norepeatNumbers = [];
-  const numbers = [];
-  let number = start;
-  for (let i = 0; i < end - start + 1; i++) {
-    numbers[i] = number;
-    number++;
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-  for (let i = 0; i < end - start + 1; i++) {
-    const n = getRandomInt(0, numbers.length - 1);
-    norepeatNumbers.push(numbers[n]);
-    numbers.splice(n, 1);
-  }
-  return norepeatNumbers;
+  return array;
 };
-
 
 const getComments = (number) => {
   const commentsArray = [];
@@ -54,12 +43,19 @@ const getComments = (number) => {
 
 const getGaleryArray = function () {
   const postsArray = [];
-  const photoNumbers = getNoRepeatNumbers(1, USERS_COUNT);
+  const photoNumbers = () => {
+    const numbers = [];
+    for (let i = 0; i < USERS_COUNT; i++){
+      numbers[i] = i + 1;
+    }
+    return shuffleArray(numbers);
+  };
+  const photoArray = photoNumbers();
   for (let i = 0; i < USERS_COUNT; i++) {
     postsArray[i] = {};
     const post = postsArray[i];
     post.id = i + 1;
-    post.url = `photos/${photoNumbers[i]}.jpg`;
+    post.url = `photos/${photoArray[i]}.jpg`;
     post.description = 'Какой замечательный вид';
     post.likes = getRandomInt(15, 200);
     post.comments = getComments(getRandomInt(0, 10));
