@@ -43,19 +43,12 @@ const getComments = (number) => {
 
 const getGaleryArray = function () {
   const postsArray = [];
-  const photoNumbers = () => {
-    const numbers = [];
-    for (let i = 0; i < USERS_COUNT; i++){
-      numbers[i] = i + 1;
-    }
-    return shuffleArray(numbers);
-  };
-  const photoArray = photoNumbers();
+  const photoNumbers = shuffleArray(Array.from({ length: 25 }, (item, index) => index + 1));
   for (let i = 0; i < USERS_COUNT; i++) {
     postsArray[i] = {};
     const post = postsArray[i];
     post.id = i + 1;
-    post.url = `photos/${photoArray[i]}.jpg`;
+    post.url = `photos/${photoNumbers[i]}.jpg`;
     post.description = 'Какой замечательный вид';
     post.likes = getRandomInt(15, 200);
     post.comments = getComments(getRandomInt(0, 10));
