@@ -1,5 +1,5 @@
-import { getRandomInt } from './utils.js';
-import { shuffleArray } from './utils.js';
+import {getRandomInt} from './utils.js';
+import {shuffleArray} from './utils.js';
 
 const USERS_COUNT = 25;
 const commentsArr = [
@@ -34,7 +34,7 @@ const getComments = (number) => {
 
 const getGaleryArray = function () {
   const postsArray = [];
-  const photoNumbers = shuffleArray(Array.from({ length: USERS_COUNT }, (item, index) => index + 1));
+  const photoNumbers = shuffleArray(Array.from({length: USERS_COUNT}, (item, index) => index + 1));
   for (let i = 0; i < USERS_COUNT; i++) {
     postsArray[i] = {};
     const post = postsArray[i];

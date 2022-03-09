@@ -1,4 +1,1 @@
-import './data.js';
-import { getGaleryArray } from './data.js';
-
-getGaleryArray();
+import './galery.js';
