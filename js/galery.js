@@ -1,4 +1,5 @@
 import {getGaleryArray} from './data.js';
+import {showBigPicture} from './big-picture.js';
 
 const previewList = document.querySelector('.pictures');
 const previewTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -20,4 +21,11 @@ const createGalery = (infoArray) => {
   previewList.appendChild(listFragment);
 };
 
-createGalery(getGaleryArray());
+const photoData = getGaleryArray();
+createGalery(photoData);
+const photoColection = document.querySelectorAll('.pictures .picture');
+for (let i = 0; i < photoColection.length; i++) {
+  photoColection[i].addEventListener('click', () => {
+    showBigPicture(photoData[i]);
+  });
+}
