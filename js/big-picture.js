@@ -20,23 +20,29 @@ const showBigPicture = (currentPhoto) => {
     const commentList = picture.querySelector('.social__comments');
     commentList.innerHTML = '';
     for (let i = 0; i < allCommentsCount; i++) {
-      const element = makeComment(comments[i]);
-      commentList.insertAdjacentHTML('beforeend', element);
+      commentList.insertAdjacentHTML('beforeend', makeComment(comments[i]));
     }
   };
 
   createCommets(currentPhoto.comments);
-  document.addEventListener('keyup', (evt) => {
-    if (evt.key === 'Escape') {
+
+  const closeModalHandler = (evt) => {
+    const closeModal = () => {
       document.querySelector('.big-picture').classList.add('hidden');
       document.querySelector('body').classList.remove('modal-open');
+      document.querySelector('.big-picture__cancel').removeEventListener('click', closeModalHandler);
+      document.removeEventListener('keyup', closeModalHandler);
+    };
+    if (evt.key === 'Escape') {
+      closeModal();
+    } else {
+      closeModal();
     }
-  });
+  };
 
-  document.querySelector('.big-picture__cancel').addEventListener('click', () => {
-    document.querySelector('.big-picture').classList.add('hidden');
-    document.querySelector('body').classList.remove('modal-open');
-  });
+  document.addEventListener('keyup', closeModalHandler);
+
+  document.querySelector('.big-picture__cancel').addEventListener('click', closeModalHandler);
 };
 
 export {showBigPicture};

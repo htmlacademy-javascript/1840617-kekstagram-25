@@ -1,1 +1,3 @@
-import './galery.js';
+import {renderGalery} from './galery.js';
+
+renderGalery();
