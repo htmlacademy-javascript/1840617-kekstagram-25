@@ -1,3 +1,5 @@
+const defaultComentsCount = document.querySelectorAll('.social__comment').length;
+
 const showBigPicture = (currentPhoto) => {
   document.querySelector('.big-picture').classList.remove('hidden');
   document.querySelector('.social__comment-count').classList.add('hidden');
@@ -14,14 +16,23 @@ const showBigPicture = (currentPhoto) => {
 
   picture.querySelector('.comments-count').textContent = allCommentsCount;
 
-  const makeComment = (commentInfo) => `<li class="social__comment"><img class="social__picture" src="${commentInfo.avatar}" alt="${commentInfo.name}" width="35" height="35"><p class="social__text">${commentInfo.message}</p></li>`;
-
   const createCommets = (comments) => {
     const commentList = picture.querySelector('.social__comments');
-    commentList.innerHTML = '';
+
     for (let i = 0; i < allCommentsCount; i++) {
-      commentList.insertAdjacentHTML('beforeend', makeComment(comments[i]));
+      const comment = document.querySelector('.social__comment').cloneNode(true);
+      const commentInfo = comments[i];
+      comment.querySelector('.social__picture').src = commentInfo.avatar;
+      comment.querySelector('.social__picture').alt = commentInfo.name;
+      comment.querySelector('.social__text').textContent = commentInfo.message;
+      commentList.appendChild(comment);
     }
+
+    //removing default comments
+    for (let i = 0; i < defaultComentsCount; i++) {
+      commentList.removeChild(commentList.querySelectorAll('.social__comment')[0]);
+    }
+
   };
 
   createCommets(currentPhoto.comments);
