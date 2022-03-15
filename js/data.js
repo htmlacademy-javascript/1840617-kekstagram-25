@@ -10,9 +10,9 @@ const commentsArr = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
   'Very well!!!',
-  'AAAAAAAAAA!!!!!!!!!',
-  'More coments',
-  'WTF'
+  'So CooooooooL!!!!!!!!!',
+  'More comments',
+  'WTF?'
 ];
 const commentatorArr = ['Алена', 'Наталья', 'Роман', 'Оксана', 'Василий', 'Борис', 'Sam', 'Евграф', 'Сигизмунд', 'Ольга', 'Kat'];
 const descriptionText = ['Редкий кадр', 'Тесты камеры', 'Сегодня солнечно', 'Ставьте лайки', 'Больше лайков', 'Какой замечательный вид'];
@@ -42,7 +42,7 @@ const getGaleryArray = function () {
     post.url = `photos/${photoNumbers[i]}.jpg`;
     post.description = descriptionText[getRandomInt(0, descriptionText.length -1)];
     post.likes = getRandomInt(15, 200);
-    post.comments = getComments(getRandomInt(0, 10));
+    post.comments = getComments(getRandomInt(1, 10));
   }
   return postsArray;
 };
