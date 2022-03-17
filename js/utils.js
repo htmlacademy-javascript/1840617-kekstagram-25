@@ -11,5 +11,4 @@ const shuffleArray = (array) => {
   return array;
 };
 
-export {getRandomInt};
-export {shuffleArray};
+export {getRandomInt, shuffleArray};

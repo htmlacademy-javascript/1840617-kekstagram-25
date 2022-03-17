@@ -35,25 +35,31 @@ const showBigPicture = (currentPhoto) => {
 
   };
 
-  createCommets(currentPhoto.comments);
+  const closeOverlay = (overlay, btnClass) => {
+    const closeModalHandler = (evt) => {
+      const closeModal = () => {
+        document.querySelector(`.${overlay}`).classList.add('hidden');
+        document.querySelector('body').classList.remove('modal-open');
+        document.querySelector(`.${btnClass}`).removeEventListener('click', closeModalHandler);
+        document.removeEventListener('keyup', closeModalHandler);
+      };
 
-  const closeModalHandler = (evt) => {
-    const closeModal = () => {
-      document.querySelector('.big-picture').classList.add('hidden');
-      document.querySelector('body').classList.remove('modal-open');
-      document.querySelector('.big-picture__cancel').removeEventListener('click', closeModalHandler);
-      document.removeEventListener('keyup', closeModalHandler);
+      if (evt.key === 'Escape') {
+        closeModal();
+      }
+      if (evt.pointerId === 1) {
+        closeModal();
+      }
     };
-    if (evt.key === 'Escape') {
-      closeModal();
-    } else {
-      closeModal();
-    }
+
+    document.addEventListener('keyup', closeModalHandler);
+
+    document.querySelector(`.${btnClass}`).addEventListener('click', closeModalHandler);
   };
 
-  document.addEventListener('keyup', closeModalHandler);
+  createCommets(currentPhoto.comments);
 
-  document.querySelector('.big-picture__cancel').addEventListener('click', closeModalHandler);
+  closeOverlay('big-picture', 'big-picture__cancel');
 };
 
 export {showBigPicture};
