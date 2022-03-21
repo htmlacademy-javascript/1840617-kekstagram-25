@@ -44,5 +44,15 @@ const closeModal = (button, overlay) => {
   document.addEventListener('keyup', closeModalHandler);
 };
 
+const numDecline = (num,  genitiveSingular, genitivePlural) => {
+  let str = num.toString();
+  if (str.length > 2) {
+    const count = str.length - 2;
+    str = str.slice(count, count + 2);
+  }
+  const number = parseInt(str,10);
+  if (parseInt(str.slice(-1), 10) === 1 && number !== 11) {return genitiveSingular;}
+  return genitivePlural;
+};
 
-export {getRandomInt, shuffleArray, closeModal};
+export {getRandomInt, shuffleArray, closeModal, numDecline};

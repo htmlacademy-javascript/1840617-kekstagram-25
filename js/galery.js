@@ -1,5 +1,6 @@
 import {getGaleryArray} from './data.js';
 import {showBigPicture} from './big-picture.js';
+import {showComments} from './big-picture.js';
 
 const previewList = document.querySelector('.pictures');
 const previewTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -15,6 +16,7 @@ const renderGalery = () => {
     previewElement.querySelector('.picture__likes').textContent = pictureInfo.likes;
     previewElement.addEventListener('click', () => {
       showBigPicture(pictureInfo);
+      showComments();
     });
     listFragment.appendChild(previewElement);
   };
@@ -29,6 +31,5 @@ const renderGalery = () => {
   const photoData = getGaleryArray();
   createGalery(photoData);
 };
-
 
 export {renderGalery};

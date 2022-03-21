@@ -2,6 +2,14 @@ import {getRandomInt} from './utils.js';
 import {shuffleArray} from './utils.js';
 
 const USERS_COUNT = 25;
+const commentsLimits = {
+  min: 1,
+  max: 10,
+};
+const likesLimits = {
+  min: 15,
+  max: 300,
+};
 const commentsArr = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -41,8 +49,8 @@ const getGaleryArray = function () {
     post.id = i + 1;
     post.url = `photos/${photoNumbers[i]}.jpg`;
     post.description = descriptionText[getRandomInt(0, descriptionText.length -1)];
-    post.likes = getRandomInt(15, 200);
-    post.comments = getComments(getRandomInt(1, 10));
+    post.likes = getRandomInt(likesLimits.min, likesLimits.max);
+    post.comments = getComments(getRandomInt(commentsLimits.min, commentsLimits.max));
   }
   return postsArray;
 };
