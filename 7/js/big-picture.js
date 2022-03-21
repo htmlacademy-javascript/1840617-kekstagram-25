@@ -1,7 +1,11 @@
-const defaultComentsCount = document.querySelectorAll('.social__comment').length;
+import {closeModal} from './utils.js';
+
 
 const showBigPicture = (currentPhoto) => {
-  document.querySelector('.big-picture').classList.remove('hidden');
+  const defaultComentsCount = document.querySelectorAll('.social__comment').length;
+  const overlay = document.querySelector('.big-picture');
+  const button = document.querySelector('.big-picture__cancel');
+  overlay.classList.remove('hidden');
   document.querySelector('.social__comment-count').classList.add('hidden');
   document.querySelector('.comments-loader').classList.add('hidden');
   document.querySelector('body').classList.add('modal-open');
@@ -35,31 +39,11 @@ const showBigPicture = (currentPhoto) => {
 
   };
 
-  const closeOverlay = (overlay, btnClass) => {
-    const closeModalHandler = (evt) => {
-      const closeModal = () => {
-        document.querySelector(`.${overlay}`).classList.add('hidden');
-        document.querySelector('body').classList.remove('modal-open');
-        document.querySelector(`.${btnClass}`).removeEventListener('click', closeModalHandler);
-        document.removeEventListener('keyup', closeModalHandler);
-      };
-
-      if (evt.key === 'Escape') {
-        closeModal();
-      }
-      if (evt.pointerId === 1) {
-        closeModal();
-      }
-    };
-
-    document.addEventListener('keyup', closeModalHandler);
-
-    document.querySelector(`.${btnClass}`).addEventListener('click', closeModalHandler);
-  };
 
   createCommets(currentPhoto.comments);
 
-  closeOverlay('big-picture', 'big-picture__cancel');
+
+  closeModal(button, overlay);
 };
 
 export {showBigPicture};
