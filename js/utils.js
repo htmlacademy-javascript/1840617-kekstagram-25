@@ -24,7 +24,7 @@ const closeModal = (button, overlay) => {
       const textError = document.querySelector('.img-upload__error');
       description.value = '';
       hashtag.value = '';
-      textError.textContent = '';
+      if (textError) {textError.textContent = '';}
       overlay.classList.add('hidden');
       document.querySelector('body').classList.remove('modal-open');
       button.removeEventListener('click', closeModalHandler);
