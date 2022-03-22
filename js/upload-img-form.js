@@ -45,7 +45,7 @@ pristine.addValidator(hashtag, validateStr, 'Какой то неправиль�
 const validateDuplicateHashtag = (value) => {
   if (value.length === 0) {return true;}
   const hashtags = getHashtags(value);
-  const swapArr = [...new Set(hashtags)];
+  const swapArr = [...new Set(hashtags.map((element) => element.toLowerCase()))];
   return hashtags.length === swapArr.length;
 };
 
