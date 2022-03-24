@@ -17,6 +17,8 @@ const closeModal = (button, overlay) => {
   const description = document.querySelector('.text__description');
   const hashtag = document.querySelector('.text__hashtags');
   const commentField = document.querySelector('.social__footer-text');
+  const uploadPicture = document.querySelector('.img-upload__preview > img');
+  const originalFilter = document.querySelector('#effect-none');
 
   const closeModalHandler = (evt) => {
     const hideModal = () => {
@@ -25,6 +27,9 @@ const closeModal = (button, overlay) => {
       description.value = '';
       hashtag.value = '';
       if (textError) {textError.textContent = '';}
+      uploadPicture.style.transform = 'scale(1)';
+      uploadPicture.style.filter = 'none';
+      originalFilter.setAttribute('checked', 'true');
       overlay.classList.add('hidden');
       document.querySelector('body').classList.remove('modal-open');
       button.removeEventListener('click', closeModalHandler);
@@ -35,7 +40,10 @@ const closeModal = (button, overlay) => {
     if (evt.target === description || evt.target === hashtag || evt.target === commentField) {
       if (evt.pointerId === 1) {hideModal();}
     } else {
-      if (evt.key === 'Escape') {hideModal();}
+      if (evt.key === 'Escape') {
+        hideModal();
+        document.querySelector('.img-upload__form').reset();
+      }
       if (evt.pointerId === 1) {hideModal();}
     }
   };
@@ -51,7 +59,7 @@ const numDecline = (num,  genitiveSingular, genitivePlural) => {
     str = str.slice(count, count + 2);
   }
   const number = parseInt(str,10);
-  if (parseInt(str.slice(-1), 10) === 1 && number !== 11) {return genitiveSingular;}
+  if (str.slice(-1) === '1' && number !== 11) {return genitiveSingular;}
   return genitivePlural;
 };
 
