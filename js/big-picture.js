@@ -73,9 +73,7 @@ const showBigPicture = (currentPhoto) => {
 
   };
 
-
   createCommets(currentPhoto.comments);
-
 
   closeModal(button, overlay);
 };

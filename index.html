@@ -6,7 +6,9 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="./nouislider/nouislider.css">
   <script src="./pristine/pristine.min.js" type="text/javascript"></script>
+  <script src="./nouislider/nouislider.js" type="text/javascript"></script>
   <script src="./js/main.js" type="module" defer></script>
   <title>Кекстаграм</title>
 </head>
@@ -120,7 +122,9 @@
                   <div class="img-upload__item">
                     <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" autocorrect="off">
                   </div>
-                  <div class="img-upload__item"><textarea class="text__description" name="description" maxlength="140" placeholder="Ваш комментарий..."></textarea></div>
+                  <div class="img-upload__item">
+                    <textarea class="text__description" name="description" maxlength="140" placeholder="Ваш комментарий..."></textarea>
+                  </div>
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
@@ -172,7 +176,7 @@
           <!-- Форма для отправки комментария -->
           <div class="social__footer">
             <img class="social__picture" src="img/avatar-6.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-            <input type="text" class="social__footer-text" placeholder="Ваш комментарий...">
+            <input type="text" class="social__footer-text" maxlength="140" placeholder="Ваш комментарий...">
             <button type="button" class="social__footer-btn" name="button">Отправить</button>
           </div>
         </div>

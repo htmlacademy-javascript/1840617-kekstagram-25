@@ -710,6 +710,15 @@ main {
   border-radius: 5px;
 }
 
+.img-upload__item--invalid .text__hashtags{
+  outline-color: #c32a2a;
+  box-shadow:  inset 0 0 0 2px #c32a2a;
+}
+
+.img-upload__item--valid .text__hashtags{
+  outline-color: initial;
+  box-shadow: none;
+}
 
 /**
  * Кнопка для отправки изображения

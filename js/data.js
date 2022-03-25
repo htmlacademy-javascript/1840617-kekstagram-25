@@ -2,9 +2,17 @@ import {getRandomInt} from './utils.js';
 import {shuffleArray} from './utils.js';
 
 const USERS_COUNT = 25;
-const commentsLimits = {
+const avatrsCount = {
   min: 1,
-  max: 10,
+  max: 6,
+};
+const randomIdCount = {
+  min: 50,
+  max: 300,
+};
+const commentsLimits = {
+  min: 11,
+  max: 41,
 };
 const likesLimits = {
   min: 15,
@@ -31,8 +39,8 @@ const getComments = (number) => {
     const comment = {};
     const randomCommentator = getRandomInt(0, (commentatorArr.length - 1));
     const randdomMessage = getRandomInt(0, (commentsArr.length - 1));
-    comment.id = getRandomInt(50, 233);
-    comment.avatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
+    comment.id = getRandomInt(randomIdCount['min'], randomIdCount['max']);
+    comment.avatar = `img/avatar-${getRandomInt(avatrsCount['min'], avatrsCount['max'])}.svg`;
     comment.message = commentsArr[randdomMessage];
     comment.name = commentatorArr[randomCommentator];
     commentsArray.push(comment);
@@ -55,4 +63,62 @@ const getGaleryArray = function () {
   return postsArray;
 };
 
-export {getGaleryArray};
+const effects = {
+  chrome: {
+    min: 0,
+    max: 1,
+    start: 1,
+    step: 0.1,
+    filter: 'grayscale',
+    unit: '',
+  },
+  sepia: {
+    min: 0,
+    max: 1,
+    start: 1,
+    step: 0.1,
+    filter: 'sepia',
+    unit: '',
+  },
+  marvin: {
+    min: 0,
+    max: 100,
+    start: 100,
+    step: 1,
+    filter: 'invert',
+    unit: '%',
+  },
+  phobos: {
+    min: 0,
+    max: 3,
+    start: 3,
+    step: 0.1,
+    filter: 'blur',
+    unit: 'px',
+  },
+  heat: {
+    min: 1,
+    max: 3,
+    start: 3,
+    step: 0.1,
+    filter: 'brightness',
+    unit: '',
+  },
+  none: {
+    min: 0,
+    max: 10,
+    start: 10,
+    step: 1,
+    filter: 'none',
+    unit: '',
+  },
+};
+
+const buttons = {
+  enter: 'Enter',
+  escape: 'Escape',
+  space: 'Space',
+  click: '1',
+  anyClick: '-1',
+};
+export {getGaleryArray, effects, buttons};
