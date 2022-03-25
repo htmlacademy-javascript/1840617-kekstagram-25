@@ -1,4 +1,10 @@
 import {scaleControlHandler} from './upload-img-form.js';
+import {buttons} from './data.js';
+
+const LAST_DIGITS = 2;
+const PLURAL_CONTROL = '1';
+const SINGLE_DIGIT = 1;
+const DEFAULT_SCALE = 1;
 
 const getRandomInt = (min, max) => {
   if (min > max) {[min, max] = [max, min];}
@@ -24,27 +30,23 @@ const closeModal = (button, overlay) => {
     const hideModal = () => {
       const scale = document.querySelector('.img-upload__scale');
       const textError = document.querySelector('.img-upload__error');
-      description.value = '';
-      hashtag.value = '';
       if (textError) {textError.textContent = '';}
-      uploadPicture.style.transform = 'scale(1)';
+      uploadPicture.style.transform = `scale(${DEFAULT_SCALE})`;
       uploadPicture.style.filter = 'none';
-      originalFilter.setAttribute('checked', 'true');
+      originalFilter.checked = 'true';
       overlay.classList.add('hidden');
+      document.querySelector('.img-upload__form').reset();
       document.querySelector('body').classList.remove('modal-open');
       button.removeEventListener('click', closeModalHandler);
       document.removeEventListener('keyup', closeModalHandler);
       scale.removeEventListener('click', scaleControlHandler);
-
     };
+
+    if (evt.target === button && (evt.pointerId >= buttons.anyClick || evt.key === buttons.enter)) {hideModal();}
     if (evt.target === description || evt.target === hashtag || evt.target === commentField) {
-      if (evt.pointerId === 1) {hideModal();}
+      if (evt.pointerId === buttons.click) {hideModal();}
     } else {
-      if (evt.key === 'Escape') {
-        hideModal();
-        document.querySelector('.img-upload__form').reset();
-      }
-      if (evt.pointerId === 1) {hideModal();}
+      if (evt.key === buttons.escape || evt.pointerId === buttons.click) {hideModal();}
     }
   };
 
@@ -53,14 +55,17 @@ const closeModal = (button, overlay) => {
 };
 
 const numDecline = (num,  genitiveSingular, genitivePlural) => {
-  let str = num.toString();
-  if (str.length > 2) {
-    const count = str.length - 2;
-    str = str.slice(count, count + 2);
+  const str = num.toString();
+  const lastSymbol = str.slice(-1);
+  let penultSymbol = '';
+
+  if (str.length > SINGLE_DIGIT) {
+    penultSymbol =str.slice(str.length - LAST_DIGITS, -1);
+    return penultSymbol !== PLURAL_CONTROL && lastSymbol === PLURAL_CONTROL ?  genitiveSingular : genitivePlural;
   }
-  const number = parseInt(str,10);
-  if (str.slice(-1) === '1' && number !== 11) {return genitiveSingular;}
-  return genitivePlural;
+
+  return lastSymbol === PLURAL_CONTROL ? genitiveSingular :genitivePlural;
+
 };
 
 export {getRandomInt, shuffleArray, closeModal, numDecline};

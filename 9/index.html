@@ -123,7 +123,9 @@
                   <div class="img-upload__item">
                     <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" autocorrect="off">
                   </div>
-                  <div class="img-upload__item"><textarea class="text__description" name="description" maxlength="140" placeholder="Ваш комментарий..."></textarea></div>
+                  <div class="img-upload__item">
+                    <textarea class="text__description" name="description" maxlength="140" placeholder="Ваш комментарий..."></textarea>
+                  </div>
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
@@ -175,7 +177,7 @@
           <!-- Форма для отправки комментария -->
           <div class="social__footer">
             <img class="social__picture" src="img/avatar-6.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-            <input type="text" class="social__footer-text" placeholder="Ваш комментарий...">
+            <input type="text" class="social__footer-text" maxlength="140" placeholder="Ваш комментарий...">
             <button type="button" class="social__footer-btn" name="button">Отправить</button>
           </div>
         </div>

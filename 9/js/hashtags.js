@@ -47,7 +47,7 @@ const hashtagHandler = (value) => {
     },
     {
       check: inputArray.some((item) => item.indexOf('#', 1) >= 1),
-      error: 'ХэшТег не может содержать только решетку.\n',
+      error: 'ХэшТеги должны разделяться пробелами.\n',
     },
     {
       check: inputArray.some((item) => item.length > MAX_SYMBOLS),

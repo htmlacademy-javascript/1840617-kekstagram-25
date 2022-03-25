@@ -6,17 +6,24 @@ const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
 const DEFAULT_SCALE_VALUE = 100;
 
+const defaultEfect = {
+  min: 0,
+  max: 10,
+  start: 10,
+  step: 1,
+  filter: 'none',
+  unit: '',
+};
+
 const button = document.querySelector('.img-upload__cancel');
 const overlay = document.querySelector('.img-upload__overlay');
 const scale = document.querySelector('.img-upload__scale');
-
 
 //Img transformation
 const controlSmaller = scale.querySelector('.scale__control--smaller');
 const controlBigger = scale.querySelector('.scale__control--bigger');
 const scaleValue = scale.querySelector('.scale__control--value');
 const picture = document.querySelector('.img-upload__preview > img');
-
 
 const scaleControlHandler = (evt) => {
   const value = parseInt(scaleValue.value, 10);
@@ -34,11 +41,11 @@ const sliderElement = document.querySelector('.effect-level__slider');
 
 noUiSlider.create(sliderElement, {
   range: {
-    min: 0,
-    max: 1,
+    min: defaultEfect['min'],
+    max: defaultEfect['max'],
   },
-  start: 1,
-  step: 0.1,
+  start: defaultEfect['start'],
+  step: defaultEfect['step'],
 });
 
 const sliderControl = document.querySelector('.img-upload__effect-level');
