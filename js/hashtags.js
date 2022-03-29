@@ -1,17 +1,6 @@
 const MAX_HASHTAGS = 5;
 const MAX_SYMBOLS = 20;
 
-const hashtag = document.querySelector('.text__hashtags');
-const uploadForm = document.querySelector('.img-upload__form');
-
-const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__item',
-  errorClass: 'img-upload__item--invalid',
-  successClass: 'img-upload__item--valid',
-  errorTextParent: 'img-upload__item',
-  errorTextTag: 'div',
-  errorTextClass: 'img-upload__error'
-});
 
 let errorMessage = '';
 
@@ -72,12 +61,5 @@ const hashtagHandler = (value) => {
   });
 };
 
-pristine.addValidator(hashtag, hashtagHandler, error, 2, false);
 
-const onHashtagInput = () => {
-  pristine.validate();
-};
-
-hashtag.addEventListener('input', onHashtagInput());
-
-export {hashtag};
+export {hashtagHandler, error};
