@@ -1,7 +1,12 @@
 import './hashtags.js';
-import './data.js';
+import {ServerAdress, FetchConfig} from './data.js';
 import {renderGalery} from './galery.js';
-import {loadImg} from './upload-img-form.js';
+import {closeUploadModal} from './upload-img-form.js';
+import {setUploadFormSubmit} from './upload-img-form.js';
+import {getData} from './api.js';
+import {showAlert} from './utils.js';
 
-renderGalery();
-loadImg();
+
+getData(renderGalery, showAlert, ServerAdress.LOAD_URL, FetchConfig.LOAD_CONFIG);
+
+setUploadFormSubmit(closeUploadModal);
