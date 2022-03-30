@@ -56,6 +56,7 @@ const closeOnEsc = (evt, cb) => {
 
 const showAlert = (message, color) => {
 
+
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
   alertContainer.style.position = 'absolute';

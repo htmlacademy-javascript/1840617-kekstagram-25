@@ -56,4 +56,27 @@ const Buttons = {
   CLICK: '1',
   ANYCLICK: '-1',
 };
-export {Effects, Buttons};
+
+const ServerAdress = {
+  LOAD_URL: 'https://25.javascript.pages.academy/kekstagram/data',
+  UPLOAD_URL: 'https://25.javascript.pages.academy/kekstagram/',
+};
+
+const FetchConfig = {
+  LOAD_CONFIG: {
+    method: 'GET'},
+  UPLOAD_CONFIG: {
+    method: 'POST',
+    body: '',
+  },
+};
+
+const AlertMessage = {
+  FAIL:'Не удалось отправить форму. Попробуйте еще раз',
+  SUCCESS: 'Загрузка прошла успешно',
+  FAIL_COLOR: '#c32a2a',
+  SUCCESS_COLOR: '#467744',
+  TEST: '#ffffff'
+};
+
+export {Effects, Buttons, ServerAdress, FetchConfig, AlertMessage};

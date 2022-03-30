@@ -1,5 +1,5 @@
-import { sendData } from './api.js';
-import {Effects} from './data.js';
+import {getData} from './api.js';
+import {Effects, FetchConfig, ServerAdress, AlertMessage} from './data.js';
 import {hashtagHandler, error} from './hashtags.js';
 import {closeOnCancelButton, closeOnEsc, showAlert, body} from './utils.js';
 
@@ -9,12 +9,7 @@ const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
 const DEFAULT_SCALE_VALUE = 100;
 const DEFAULT_SCALE = 1;
-const AlertMmessage = {
-  FAIL:'Не удалось отправить форму. Попробуйте еще раз',
-  SUCCESS: 'Загрузка прошла успешно',
-  FAIL_COLOR: '#c32a2a',
-  SUCCESS_COLOR: '#467744',
-};
+
 
 const SubmitButtonText = {
   BLOCK: 'Отправляю...',
@@ -229,15 +224,18 @@ const setUploadFormSubmit = (onSuccess) => {
 
     evt.preventDefault();
 
+    FetchConfig.UPLOAD_CONFIG.body = new FormData(evt.target);
+
+
     const isValid = pristine.validate();
 
     if (isValid) {
       blockSubmitButton();
-      sendData(
+      getData(
 
         () => {
 
-          showAlert(AlertMmessage.SUCCESS, AlertMmessage.SUCCESS_COLOR);
+          showAlert(AlertMessage.SUCCESS, AlertMessage.SUCCESS_COLOR);
           onSuccess();
 
           unblockSubmitButton();
@@ -245,12 +243,12 @@ const setUploadFormSubmit = (onSuccess) => {
 
         () => {
 
-          showAlert(AlertMmessage.FAIL, AlertMmessage.FAIL_COLOR);
+          showAlert(AlertMessage.FAIL, AlertMessage.FAIL_COLOR);
           unblockSubmitButton();
 
         },
-
-        new FormData(evt.target),
+        ServerAdress.UPLOAD_URL,
+        FetchConfig.UPLOAD_CONFIG
 
       );
 
@@ -282,4 +280,4 @@ const loadImg = () => {
   });
 };
 
-export {loadImg, setUploadFormSubmit, closeUploadModal};
+export {loadImg, setUploadFormSubmit, closeUploadModal, AlertMessage};

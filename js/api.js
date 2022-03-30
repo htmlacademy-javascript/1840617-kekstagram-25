@@ -1,38 +1,39 @@
-const getData = (onSuccess) => {
-  fetch('https://25.javascript.pages.academy/kekstagram/data')
-    .then((response) => response.json())
-    .then((photoData) => {
+import {ServerAdress, AlertMessage} from './data.js';
+import {showAlert} from './utils.js';
 
-      onSuccess(photoData); //rendergalery(photoData)
 
-    });
-};
+const getData = (onSuccess, onFail, adress, config) => {
 
-const sendData = (onSuccess, onFail, body) => {
+
   fetch(
-    'https://25.javascript.pages.academy/kekstagram',
-    {
-      method: 'POST',
-      body,
-    },
-
+    adress,
+    config
   )
     .then((response) => {
 
       if (response.ok) {
 
-        onSuccess();
+        if (adress === ServerAdress.LOAD_URL) {
 
+          response.json().then(onSuccess);
+
+          showAlert(AlertMessage.SUCCESS, AlertMessage.SUCCESS_COLOR);
+
+        }
+        if (adress === ServerAdress.UPLOAD_URL) {
+
+          onSuccess();
+        }
       } else {
 
-        onFail('Данные невалидны');
 
+        onFail(AlertMessage.FAIL, AlertMessage.FAIL_COLOR);
       }
-
     })
     .catch(() => {
-      onFail('err');
+
+      onFail(AlertMessage.FAIL, AlertMessage.FAIL_COLOR);
     });
 };
 
-export {getData, sendData};
+export {getData};
