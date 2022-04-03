@@ -1,9 +1,7 @@
 import {ServerAdress, AlertMessage} from './data.js';
 import {showAlert} from './utils.js';
 
-
 const getData = (onSuccess, onFail, adress, config) => {
-
 
   fetch(
     adress,
