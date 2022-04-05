@@ -12,7 +12,6 @@ const listFragment = document.createDocumentFragment();
 
 /// filtration
 const filtersForm = document.querySelector('.img-filters__form');
-const filters = filtersForm.querySelectorAll('.img-filters__button');
 const previewContainer = document.querySelector('.pictures');
 
 
@@ -25,8 +24,17 @@ const Filters = {
   DEFAULT: 'filter-default',
 };
 
-let photos = [];
-let defaultPhotos = [];
+const TogleSelectors = {
+  TAGS: {
+    form: 'form',
+    button: 'button',
+  },
+  CLASS: {
+    buttonClass: '.img-filters__button',
+    activeButton: '.img-filters__button--active',
+  }
+};
+
 
 const createPreviewPicture = (pictureInfo) => {
 
@@ -45,22 +53,6 @@ const createPreviewPicture = (pictureInfo) => {
 
 };
 
-
-const togleActiveFilter = (btn) => {
-
-  filters.forEach((el) => {
-
-    if (el.classList.contains(ACTIVE_CLASS)) {
-
-      el.classList.remove(ACTIVE_CLASS);
-
-    }
-
-  });
-
-  btn.classList.add(ACTIVE_CLASS);
-
-};
 
 const clearPreviews = () => {
 
@@ -90,71 +82,61 @@ const createGalery = (infoArray) => {
 
 };
 
-const TogleSelectors = {
-  TAGS: {
-    form: 'form',
-    button: 'button',
-  },
-  CLASS: {
-    buttonClass: '.img-filters__button',
-    activeButton: '.img-filters__button--active',
+
+const filtration = (photoData) => {
+
+  const btn = document.querySelector(`.${ACTIVE_CLASS}`);
+
+  const data = photoData;
+
+
+  let photos = data.slice(0);
+
+  switch (btn.id) {
+
+    case Filters.DEFAULT:
+
+      photos = data;
+      break;
+
+
+    case Filters.RANDOM:
+
+      photos = shuffleArray(photos).slice(0, MAX_PREVIEWS);
+      break;
+
+
+    case Filters.DISCUSSED:
+
+      photos.sort((a, b) => b.comments.length - a.comments.length);
+      break;
+
   }
+
+  createGalery(photos);
+
 };
 
 const filterClickHandler = (evt) => {
 
-  let button;
+  if (evt.target.type === TogleSelectors.TAGS.button) {
 
-  if (evt.target.closest(TogleSelectors.CLASS.buttonClass)) {
+    filtersForm.querySelector(`.${ACTIVE_CLASS}`).classList.remove(ACTIVE_CLASS);
 
-    button = evt.target.closest('button');
-
-    togleActiveFilter(button);
-
-  } else {
-
-    button = document.querySelector(`.${ACTIVE_CLASS}`);
+    evt.target.closest(TogleSelectors.TAGS.button).classList.add(ACTIVE_CLASS);
   }
-
-
-  let filteredPhotos;
-
-  if (button.id === Filters.RANDOM) {
-
-    filteredPhotos = shuffleArray(photos).slice(0, MAX_PREVIEWS);
-
-  }
-
-
-  if (button.id === Filters.DISCUSSED) {
-
-    filteredPhotos = photos;
-    filteredPhotos.sort((a, b) => b.comments.length - a.comments.length);
-
-  }
-
-  if (button.id === Filters.DEFAULT) {
-
-    filteredPhotos = defaultPhotos;
-
-  }
-
-
-  createGalery(filteredPhotos);
-
 
 };
+
+const debounceHandler = (data) => debounce(() => filtration(data), 500);
 
 
 const renderGalery = (photoInfo) => {
 
-  photos = photoInfo.slice(0);
-  defaultPhotos = photoInfo.slice(0);
+  filtersForm.addEventListener('click', filterClickHandler);
+  filtersForm.addEventListener('click', debounceHandler(photoInfo));
 
-  filtersForm.addEventListener('click', debounce((evt) => filterClickHandler(evt)));
-
-
-  createGalery(photos);
+  createGalery(photoInfo);
 
   filter.classList.remove('hidden');
   filter.style.opacity = 1;
