@@ -1,7 +1,8 @@
 import {getData} from './api.js';
-import {Effects, FetchConfig, ServerAdress, AlertMessage} from './data.js';
+import {Effects, FetchConfig, ServerAdress} from './data.js';
 import {hashtagHandler, error} from './hashtags.js';
-import {closeOnCancelButton, closeOnEsc, showAlert, body} from './utils.js';
+import {createErrorMessage, createSuccessMessage} from './messages.js';
+import {closeOnCancelButton, closeOnEsc, body} from './utils.js';
 
 
 const SCALE_STEP = 25;
@@ -152,6 +153,7 @@ const cancelButtonClickHandler = (evt) => {
 
   closeOnCancelButton(evt, () => {
     closeUploadModal();
+
   });
 
 };
@@ -162,6 +164,7 @@ const modalKeyupHandler = (evt) => {
 
     closeOnEsc(evt, () => {
       closeUploadModal();
+
     });
 
   }
@@ -235,15 +238,15 @@ const setUploadFormSubmit = (onSuccess) => {
 
         () => {
 
-          showAlert(AlertMessage.SUCCESS, AlertMessage.SUCCESS_COLOR);
+          createSuccessMessage();
           onSuccess();
 
           unblockSubmitButton();
         },
-
         () => {
 
-          showAlert(AlertMessage.FAIL, AlertMessage.FAIL_COLOR);
+          createErrorMessage();
+          closeUploadModal();
           unblockSubmitButton();
 
         },
@@ -280,4 +283,4 @@ const loadImg = () => {
   });
 };
 
-export {loadImg, setUploadFormSubmit, closeUploadModal, AlertMessage};
+export {loadImg, setUploadFormSubmit, closeUploadModal};

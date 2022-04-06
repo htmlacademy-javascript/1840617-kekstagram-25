@@ -71,12 +71,5 @@ const FetchConfig = {
   },
 };
 
-const AlertMessage = {
-  FAIL:'Не удалось отправить форму. Попробуйте еще раз',
-  SUCCESS: 'Загрузка прошла успешно',
-  FAIL_COLOR: '#c32a2a',
-  SUCCESS_COLOR: '#467744',
-  TEST: '#ffffff'
-};
 
-export {Effects, Buttons, ServerAdress, FetchConfig, AlertMessage};
+export {Effects, Buttons, ServerAdress, FetchConfig};
