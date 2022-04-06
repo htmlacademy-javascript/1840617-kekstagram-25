@@ -1,8 +1,8 @@
 import {getData} from './api.js';
-import {Effects, FetchConfig, ServerAdress} from './data.js';
-import {hashtagHandler, error} from './hashtags.js';
+import {Effects, FetchConfig, ServerAdress, body} from './data.js';
+import {validateHashtagHandler, error} from './hashtags.js';
 import {createErrorMessage, createSuccessMessage} from './messages.js';
-import {closeOnCancelButton, closeOnEsc, body} from './utils.js';
+import {closeOnCancelButton, closeOnEsc} from './utils.js';
 
 
 const SCALE_STEP = 25;
@@ -194,7 +194,7 @@ const pristine = new Pristine(uploadForm, {
 });
 
 
-pristine.addValidator(hashtag, hashtagHandler, error, 2, false);
+pristine.addValidator(hashtag, validateHashtagHandler, error, 2, false);
 
 const onHashtagInput = () => {
   pristine.validate();

@@ -2,19 +2,6 @@ import {showBigPicture} from './big-picture.js';
 import {loadImg} from './upload-img-form.js';
 import {shuffleArray, debounce} from './utils.js';
 
-
-const previewList = document.querySelector('.pictures');
-const previewTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const filter = document.querySelector('.img-filters');
-
-const listFragment = document.createDocumentFragment();
-
-
-/// filtration
-const filtersForm = document.querySelector('.img-filters__form');
-const previewContainer = document.querySelector('.pictures');
-
-
 const ACTIVE_CLASS = 'img-filters__button--active';
 const MAX_PREVIEWS = 10;
 
@@ -34,6 +21,17 @@ const TogleSelectors = {
     activeButton: '.img-filters__button--active',
   }
 };
+
+const previewList = document.querySelector('.pictures');
+const previewTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const filter = document.querySelector('.img-filters');
+
+const listFragment = document.createDocumentFragment();
+
+
+/// filtration
+const filtersForm = document.querySelector('.img-filters__form');
+const previewContainer = document.querySelector('.pictures');
 
 
 const createPreviewPicture = (pictureInfo) => {

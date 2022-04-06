@@ -6,7 +6,7 @@ let errorMessage = '';
 
 const error = () => errorMessage;
 
-const hashtagHandler = (value) => {
+const validateHashtagHandler = (value) => {
   errorMessage = '';
 
   const inputText = value.toLowerCase().trim();
@@ -23,16 +23,16 @@ const hashtagHandler = (value) => {
 
   const checks = [
     {
+      check: inputArray.length > MAX_HASHTAGS,
+      error: `Максимум ${MAX_HASHTAGS} ХэшТегов.`,
+    },
+    {
       check: inputArray.some((item, number, arr) => arr.includes(item, (number +1))),
       error: 'Такой ХэшТег уже есть.\n',
     },
     {
       check: inputArray.some((item) => item === '#'),
       error: 'ХэшТег не может содержать только решетку.\n',
-    },
-    {
-      check: inputArray.length > MAX_HASHTAGS,
-      error: `Максимум ${MAX_HASHTAGS} ХэшТегов.`,
     },
     {
       check: inputArray.some((item) => item.indexOf('#', 1) >= 1),
@@ -62,4 +62,4 @@ const hashtagHandler = (value) => {
 };
 
 
-export {hashtagHandler, error};
+export {validateHashtagHandler, error};

@@ -1,4 +1,3 @@
-import './hashtags.js';
 import {ServerAdress, FetchConfig} from './data.js';
 import {renderGalery} from './galery.js';
 import {closeUploadModal} from './upload-img-form.js';
