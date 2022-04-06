@@ -15,12 +15,29 @@ const socialCaptionElement = pictureElement.querySelector('.social__caption');
 const likesCountElement = pictureElement.querySelector('.likes-count');
 const commentsCountDigitElement = pictureElement.querySelector('.comments-count');
 
+const DeclineWords = {
+  PLURAL: 'комментариев',
+  SINGULAR: 'комментария',
+};
+
 //remove default comments
 commentListElement.querySelectorAll('.social__comment').forEach((comment) => {
   commentListElement.removeChild(comment);
 });
 
 // create commentList
+
+const clearComments = () => {
+
+  commentListElement.querySelectorAll('.social__comment').forEach((element) => {
+
+    commentListElement.removeChild(element);
+
+  });
+
+};
+
+
 const createCommets = (allComments, start, end) => {
 
   const currentComments = allComments.slice(start, end);
@@ -39,64 +56,71 @@ const createCommets = (allComments, start, end) => {
 
 };
 
-const showComments = (commentsInfo) => {
+let first = 0;
+let last = 0;
+let commentsLength;
+let commentsData;
 
-  const commentsLength = commentsInfo.length;
+const clickLoadMessagesHandler = () => {
 
-  let first = 0;
-  let last = 0;
+  if (first + DEFAULT_COUNTER < commentsLength) {
 
-
-  const clickLoadMessagesHandler = () => {
-    first += DEFAULT_COUNTER;
-
-    if ((last + DEFAULT_COUNTER) >= commentsLength) {
-
-      last = commentsLength;
-      loadMessageButtonElement.classList.add('hidden');
-
-    } else {
-      last +=DEFAULT_COUNTER;
-    }
-
-
-    createCommets (commentsInfo, first, last);
-
-    commentsCountElement.firstChild.replaceWith(`${last} из `);
-
-  };
-
-
-  if (commentsLength <= DEFAULT_COUNTER) {
-
-    commentsCountElement.firstChild.replaceWith(`${commentsLength} из `);
-
-    last = commentsLength;
-
-  } else {
-
-    last = DEFAULT_COUNTER;
-    loadMessageButtonElement.classList.remove('hidden');
-    loadMessageButtonElement.addEventListener('click', clickLoadMessagesHandler);
+    first = last;
 
   }
 
-  const decline = numDecline(commentsLength, 'комментария', 'комментариев');
-  commentsCountElement.lastChild.replaceWith(` ${decline}`);
 
-  createCommets(commentsInfo, first, last);
+  last = last + DEFAULT_COUNTER < commentsLength ? last + DEFAULT_COUNTER : commentsLength;
 
+
+  if (first + DEFAULT_COUNTER >= commentsLength) {
+
+    loadMessageButtonElement.classList.add('hidden');
+    loadMessageButtonElement.removeEventListener('click', clickLoadMessagesHandler);
+
+  }
+
+  createCommets (commentsData, first, last);
+
+  commentsCountElement.firstChild.replaceWith(`${last} из `);
 
 };
 
 
-const clearComments = () => {
+const showComments = (commentsInfo) => {
 
-  commentListElement.querySelectorAll('.social__comment').forEach((element) => {
+  commentsLength = commentsInfo.length;
+  commentsData = commentsInfo;
 
-    commentListElement.removeChild(element);
+  first = 0;
 
-  });
+
+  commentsCountElement.firstChild.replaceWith(`${DEFAULT_COUNTER} из `);
+
+
+  if (first === 0) {
+
+    if (commentsLength <= DEFAULT_COUNTER) {
+
+      commentsCountElement.firstChild.replaceWith(`${commentsLength} из `);
+
+      last = commentsLength;
+
+    } else {
+
+      last = DEFAULT_COUNTER;
+      loadMessageButtonElement.classList.remove('hidden');
+      loadMessageButtonElement.addEventListener('click', clickLoadMessagesHandler);
+
+    }
+
+
+    const decline = numDecline(commentsLength, DeclineWords.SINGULAR, DeclineWords.PLURAL);
+    commentsCountElement.lastChild.replaceWith(` ${decline}`);
+
+    createCommets(commentsInfo, first, last);
+
+  }
 
 };
 
@@ -104,9 +128,10 @@ const clearComments = () => {
 const cancelButtonClickHandler = (evt) => {
 
   closeOnCancelButton(evt, () => {
-    closePreview();
-  });
 
+    closePreview();
+
+  });
 };
 
 const modalKeyupHandler = (evt) => {
@@ -114,9 +139,10 @@ const modalKeyupHandler = (evt) => {
   if (evt.target !== commentInput) {
 
     closeOnEsc(evt, () => {
-      closePreview();
-    });
 
+      closePreview();
+
+    });
   }
 };
 
@@ -125,11 +151,13 @@ function closePreview() {
 
   cancelButtonElement.removeEventListener('click', cancelButtonClickHandler);
   document.removeEventListener('keyup', modalKeyupHandler);
+  loadMessageButtonElement.removeEventListener('click', clickLoadMessagesHandler);
 
   overlayElement.classList.add('hidden');
   body.classList.remove('modal-open');
 
   clearComments();
+
 }
 
 

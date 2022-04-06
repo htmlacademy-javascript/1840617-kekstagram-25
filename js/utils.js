@@ -4,7 +4,6 @@ import {Buttons} from './data.js';
 const LAST_DIGITS = 2;
 const PLURAL_CONTROL = '1';
 const SINGLE_DIGIT = 1;
-const ALERT_SHOW_TIME = 5000;
 
 
 const body = document.querySelector('body');
@@ -54,29 +53,44 @@ const closeOnEsc = (evt, cb) => {
 
 };
 
-const showAlert = (message, color) => {
+const DELAY = 500;
 
 
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = '0';
-  alertContainer.style.top = '0';
-  alertContainer.style.right = '0';
-  alertContainer.style.padding = '10px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = color;
-  alertContainer.style.color = '#ffffff';
+function debounce (callback, timeoutDelay = DELAY) {
+  // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
+  // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
+  let timeoutId;
 
-  alertContainer.textContent = message;
+  return (...rest) => {
+    // Перед каждым новым вызовом удаляем предыдущий таймаут,
+    // чтобы они не накапливались
 
-  document.body.append(alertContainer);
+    clearTimeout(timeoutId);
 
-  setTimeout(() => {
-    alertContainer.remove();
-  }, ALERT_SHOW_TIME);
+    // Затем устанавливаем новый таймаут с вызовом колбэка на ту же задержку
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
 
+    // Таким образом цикл «поставить таймаут - удалить таймаут» будет выполняться,
+    // пока действие совершается чаще, чем переданная задержка timeoutDelay
+  };
+}
+
+const removeElement = (selector) => document.querySelector(selector).remove();
+
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 };
 
-export {numDecline, closeOnCancelButton, closeOnEsc, showAlert, body};
+export {
+  numDecline,
+  shuffleArray,
+  closeOnCancelButton,
+  closeOnEsc,
+  debounce,
+  removeElement,
+  body
+};

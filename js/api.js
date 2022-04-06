@@ -1,9 +1,8 @@
-import {ServerAdress, AlertMessage} from './data.js';
-import {showAlert} from './utils.js';
+import {ServerAdress} from './data.js';
+import {AlertMessage} from './messages.js';
 
 
 const getData = (onSuccess, onFail, adress, config) => {
-
 
   fetch(
     adress,
@@ -17,7 +16,6 @@ const getData = (onSuccess, onFail, adress, config) => {
 
           response.json().then(onSuccess);
 
-          showAlert(AlertMessage.SUCCESS, AlertMessage.SUCCESS_COLOR);
 
         }
         if (adress === ServerAdress.UPLOAD_URL) {
