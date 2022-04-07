@@ -1,6 +1,12 @@
-import {numDecline, closeOnEsc, closeOnCancelButton, body} from './utils.js';
+import {numDecline, closeOnEsc, closeOnCancelButton} from './utils.js';
+import {body} from './data.js';
 
 const DEFAULT_COUNTER = 5;
+
+const DeclineWords = {
+  PLURAL: 'комментариев',
+  SINGULAR: 'комментария',
+};
 
 const loadMessageButtonElement = document.querySelector('.social__comments-loader');
 const pictureElement = document.querySelector('.big-picture__preview');
@@ -9,21 +15,11 @@ const overlayElement = document.querySelector('.big-picture');
 const commentElement =  document.querySelector('.social__comment');
 const commentListElement = pictureElement.querySelector('.social__comments');
 const commentsCountElement = document.querySelector('.social__comment-count');
-const commentInput = document.querySelector('.social__footer-text');
+const commentInputElement = document.querySelector('.social__footer-text');
 const pictureImgElement = pictureElement.querySelector('.big-picture__img img');
 const socialCaptionElement = pictureElement.querySelector('.social__caption');
 const likesCountElement = pictureElement.querySelector('.likes-count');
 const commentsCountDigitElement = pictureElement.querySelector('.comments-count');
-
-const DeclineWords = {
-  PLURAL: 'комментариев',
-  SINGULAR: 'комментария',
-};
-
-//remove default comments
-commentListElement.querySelectorAll('.social__comment').forEach((comment) => {
-  commentListElement.removeChild(comment);
-});
 
 // create commentList
 
@@ -136,7 +132,7 @@ const cancelButtonClickHandler = (evt) => {
 
 const modalKeyupHandler = (evt) => {
 
-  if (evt.target !== commentInput) {
+  if (evt.target !== commentInputElement) {
 
     closeOnEsc(evt, () => {
 
@@ -162,6 +158,8 @@ function closePreview() {
 
 
 const showBigPicture = (currentPhoto) => {
+
+  clearComments();
 
 
   overlayElement.classList.remove('hidden');

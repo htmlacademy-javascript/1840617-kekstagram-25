@@ -71,5 +71,7 @@ const FetchConfig = {
   },
 };
 
+const body = document.querySelector('body');
 
-export {Effects, Buttons, ServerAdress, FetchConfig};
+
+export {Effects, Buttons, ServerAdress, FetchConfig, body};

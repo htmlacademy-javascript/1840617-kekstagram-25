@@ -1,11 +1,5 @@
-import {body, removeElement} from './utils.js';
-import {closeOnEsc} from './utils.js';
-
-const loadErrorMessageFragment = document.createDocumentFragment();
-const successMessageFragment = document.createDocumentFragment();
-
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
-const successTemplate = document.querySelector('#success').content.querySelector('.success');
+import {removeElement, closeOnEsc} from './utils.js';
+import {body} from './data.js';
 
 const AlertMessage = {
   FAIL:'Ошибка загрузки с сервера',
@@ -16,6 +10,13 @@ const Selectors = {
   ERR: '.error',
   SUCCESS: '.success',
 };
+
+const loadErrorMessageFragment = document.createDocumentFragment();
+const successMessageFragment = document.createDocumentFragment();
+
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+
 
 const ALERT_SHOW_TIME = 2000;
 

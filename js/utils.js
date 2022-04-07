@@ -4,9 +4,8 @@ import {Buttons} from './data.js';
 const LAST_DIGITS = 2;
 const PLURAL_CONTROL = '1';
 const SINGLE_DIGIT = 1;
+const DELAY = 500;
 
-
-const body = document.querySelector('body');
 
 const numDecline = (num,  genitiveSingular, genitivePlural) => {
 
@@ -53,8 +52,6 @@ const closeOnEsc = (evt, cb) => {
 
 };
 
-const DELAY = 500;
-
 
 function debounce (callback, timeoutDelay = DELAY) {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
@@ -91,6 +88,5 @@ export {
   closeOnCancelButton,
   closeOnEsc,
   debounce,
-  removeElement,
-  body
+  removeElement
 };

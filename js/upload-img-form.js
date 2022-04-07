@@ -1,8 +1,8 @@
 import {getData} from './api.js';
-import {Effects, FetchConfig, ServerAdress} from './data.js';
-import {hashtagHandler, error} from './hashtags.js';
+import {Effects, FetchConfig, ServerAdress, body} from './data.js';
+import {validateHashtagHandler, error} from './hashtags.js';
 import {createErrorMessage, createSuccessMessage} from './messages.js';
-import {closeOnCancelButton, closeOnEsc, body} from './utils.js';
+import {closeOnCancelButton, closeOnEsc} from './utils.js';
 
 
 const SCALE_STEP = 25;
@@ -10,7 +10,7 @@ const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
 const DEFAULT_SCALE_VALUE = 100;
 const DEFAULT_SCALE = 1;
-
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const SubmitButtonText = {
   BLOCK: 'Отправляю...',
@@ -28,11 +28,8 @@ const DefaultEfect = {
 
 
 const description = document.querySelector('.text__description');
-
 const effectVlue = document.querySelector('.effect-level__value');
-
 const submitButton = document.querySelector('.img-upload__submit');
-
 const hashtag = document.querySelector('.text__hashtags');
 const uploadForm = document.querySelector('.img-upload__form');
 
@@ -40,10 +37,9 @@ const uploadForm = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
 const scale = document.querySelector('.img-upload__scale');
 const loadPicture = document.querySelector('#upload-file');
-
 const originalFilter = document.querySelector('#effect-none');
-
 const cancelButtonElement = overlay.querySelector('.cancel');
+const effectPreviewS = document.querySelectorAll('.effects__preview');
 
 //Img transformation
 const controlSmaller = scale.querySelector('.scale__control--smaller');
@@ -198,7 +194,7 @@ const pristine = new Pristine(uploadForm, {
 });
 
 
-pristine.addValidator(hashtag, hashtagHandler, error, 2, false);
+pristine.addValidator(hashtag, validateHashtagHandler, error, 2, false);
 
 const onHashtagInput = () => {
   pristine.validate();
@@ -263,6 +259,31 @@ const setUploadFormSubmit = (onSuccess) => {
 
 
 //init
+const addUserPreviewImg = () => {
+
+  const file = loadPicture.files[0];
+  const fileName = file.name.toLowerCase();
+
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+
+  if (matches) {
+
+    const url = URL.createObjectURL(file);
+
+    picture.src = url;
+
+    effectPreviewS.forEach((preview) => {
+
+      preview.style.backgroundImage = `url(${url})`;
+
+    });
+
+  }
+
+};
+
 const loadImg = () => {
 
   loadPicture.addEventListener('change', () => {
@@ -270,6 +291,8 @@ const loadImg = () => {
     sliderControl.classList.add('hidden');
     overlay.classList.remove('hidden');
     body.classList.add('modal-open');
+
+    addUserPreviewImg();
 
     scaleValue.value = `${DEFAULT_SCALE_VALUE}%`;
 
