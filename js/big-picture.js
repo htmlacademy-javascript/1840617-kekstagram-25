@@ -1,4 +1,12 @@
-import {numDecline, closeOnEsc, closeOnCancelButton} from './utils.js';
+import {
+  numDecline,
+  closeOnEsc,
+  closeOnCancelButton,
+  cancelButtonElement,
+  loadMessageButtonElement,
+  overlayElement,
+  closePreview
+} from './utils.js';
 import {body} from './data.js';
 
 const DEFAULT_COUNTER = 5;
@@ -8,14 +16,13 @@ const DeclineWords = {
   SINGULAR: 'комментария',
 };
 
-const loadMessageButtonElement = document.querySelector('.social__comments-loader');
-const pictureElement = document.querySelector('.big-picture__preview');
-const cancelButtonElement = document.querySelector('.big-picture__cancel');
-const overlayElement = document.querySelector('.big-picture');
-const commentElement =  document.querySelector('.social__comment');
+
+const pictureElement = overlayElement.querySelector('.big-picture__preview');
+
 const commentListElement = pictureElement.querySelector('.social__comments');
-const commentsCountElement = document.querySelector('.social__comment-count');
-const commentInputElement = document.querySelector('.social__footer-text');
+const commentElement =  commentListElement.querySelector('.social__comment');
+const commentsCountElement = overlayElement.querySelector('.social__comment-count');
+const commentInputElement = overlayElement.querySelector('.social__footer-text');
 const pictureImgElement = pictureElement.querySelector('.big-picture__img img');
 const socialCaptionElement = pictureElement.querySelector('.social__caption');
 const likesCountElement = pictureElement.querySelector('.likes-count');
@@ -46,7 +53,6 @@ const createCommets = (allComments, start, end) => {
     commentClon.querySelector('.social__picture').src = comment.avatar;
     commentClon.querySelector('.social__picture').alt = comment.name;
     commentClon.querySelector('.social__text').textContent = comment.message;
-
     commentListElement.appendChild(commentClon);
   });
 
@@ -65,9 +71,7 @@ const clickLoadMessagesHandler = () => {
 
   }
 
-
   last = last + DEFAULT_COUNTER < commentsLength ? last + DEFAULT_COUNTER : commentsLength;
-
 
   if (first + DEFAULT_COUNTER >= commentsLength) {
 
@@ -77,7 +81,6 @@ const clickLoadMessagesHandler = () => {
   }
 
   createCommets (commentsData, first, last);
-
   commentsCountElement.firstChild.replaceWith(`${last} из `);
 
 };
@@ -87,74 +90,50 @@ const showComments = (commentsInfo) => {
 
   commentsLength = commentsInfo.length;
   commentsData = commentsInfo;
-
   first = 0;
-
 
   commentsCountElement.firstChild.replaceWith(`${DEFAULT_COUNTER} из `);
 
-
   if (first === 0) {
-
     if (commentsLength <= DEFAULT_COUNTER) {
 
       commentsCountElement.firstChild.replaceWith(`${commentsLength} из `);
-
       last = commentsLength;
 
     } else {
-
       last = DEFAULT_COUNTER;
       loadMessageButtonElement.classList.remove('hidden');
       loadMessageButtonElement.addEventListener('click', clickLoadMessagesHandler);
-
     }
-
 
     const decline = numDecline(commentsLength, DeclineWords.SINGULAR, DeclineWords.PLURAL);
     commentsCountElement.lastChild.replaceWith(` ${decline}`);
-
     createCommets(commentsInfo, first, last);
-
   }
 
 };
 
 
 const cancelButtonClickHandler = (evt) => {
+  evt.preventDefault();
 
   closeOnCancelButton(evt, () => {
-
-    closePreview();
-
+    closePreview(cancelButtonClickHandler, clickLoadMessagesHandler);
+    clearComments();
   });
 };
 
 const modalKeyupHandler = (evt) => {
+  evt.preventDefault();
 
   if (evt.target !== commentInputElement) {
 
     closeOnEsc(evt, () => {
-
-      closePreview();
-
+      closePreview(cancelButtonClickHandler, clickLoadMessagesHandler);
+      clearComments();
     });
   }
 };
-
-
-function closePreview() {
-
-  cancelButtonElement.removeEventListener('click', cancelButtonClickHandler);
-  document.removeEventListener('keyup', modalKeyupHandler);
-  loadMessageButtonElement.removeEventListener('click', clickLoadMessagesHandler);
-
-  overlayElement.classList.add('hidden');
-  body.classList.remove('modal-open');
-
-  clearComments();
-
-}
 
 
 const showBigPicture = (currentPhoto) => {
@@ -170,10 +149,7 @@ const showBigPicture = (currentPhoto) => {
   pictureImgElement.src = currentPhoto.url;
   socialCaptionElement.textContent = currentPhoto.description;
   likesCountElement.textContent = currentPhoto.likes;
-
-
   commentsCountDigitElement.textContent = currentPhoto.comments.length;
-
 
   showComments(currentPhoto.comments);
 
@@ -182,4 +158,10 @@ const showBigPicture = (currentPhoto) => {
 
 };
 
-export {showBigPicture, showComments};
+export {
+  showBigPicture,
+  showComments,
+  modalKeyupHandler,
+  clickLoadMessagesHandler,
+  cancelButtonClickHandler
+};

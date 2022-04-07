@@ -1,8 +1,14 @@
-import {getData} from './api.js';
+import {requestData} from './api.js';
 import {Effects, FetchConfig, ServerAdress, body} from './data.js';
 import {validateHashtagHandler, error} from './hashtags.js';
 import {createErrorMessage, createSuccessMessage} from './messages.js';
-import {closeOnCancelButton, closeOnEsc} from './utils.js';
+import {
+  closeOnCancelButton,
+  closeOnEsc,
+  killUploadHandlers,
+  overlayUpload,
+  cancelUploadButtonElement
+} from './utils.js';
 
 
 const SCALE_STEP = 25;
@@ -27,28 +33,22 @@ const DefaultEfect = {
 };
 
 
-const description = document.querySelector('.text__description');
-const effectVlue = document.querySelector('.effect-level__value');
-const submitButton = document.querySelector('.img-upload__submit');
-const hashtag = document.querySelector('.text__hashtags');
 const uploadForm = document.querySelector('.img-upload__form');
-
-
-const overlay = document.querySelector('.img-upload__overlay');
-const scale = document.querySelector('.img-upload__scale');
-const loadPicture = document.querySelector('#upload-file');
-const originalFilter = document.querySelector('#effect-none');
-const cancelButtonElement = overlay.querySelector('.cancel');
-const effectPreviewS = document.querySelectorAll('.effects__preview');
-
-//Img transformation
+const description = uploadForm.querySelector('.text__description');
+const hashtag = uploadForm.querySelector('.text__hashtags');
+const submitButton = uploadForm.querySelector('.img-upload__submit');
+const loadPicture = uploadForm.querySelector('#upload-file');
+const effectsList = uploadForm.querySelector('.effects__list');
+const originalFilter = effectsList.querySelector('#effect-none');
+const effectPreviewS = effectsList.querySelectorAll('.effects__preview');
+const scale = uploadForm.querySelector('.img-upload__scale');
 const controlSmaller = scale.querySelector('.scale__control--smaller');
 const controlBigger = scale.querySelector('.scale__control--bigger');
 const scaleValue = scale.querySelector('.scale__control--value');
-const picture = document.querySelector('.img-upload__preview > img');
-const sliderControl = document.querySelector('.img-upload__effect-level');
-const effectsList = document.querySelector('.effects__list');
-const sliderElement = document.querySelector('.effect-level__slider');
+const picture = uploadForm.querySelector('.img-upload__preview > img');
+const sliderControl = uploadForm.querySelector('.img-upload__effect-level');
+const effectVlue = sliderControl.querySelector('.effect-level__value');
+const sliderElement = sliderControl.querySelector('.effect-level__slider');
 
 
 const scaleControlHandler = (evt) => {
@@ -56,18 +56,13 @@ const scaleControlHandler = (evt) => {
   const value = parseInt(scaleValue.value, 10);
 
   if (evt.target === controlSmaller) {
-
     scaleValue.value = value > MIN_SCALE_VALUE ? `${value - SCALE_STEP}%` : `${MIN_SCALE_VALUE}%`;
-
   }
 
 
   if (evt.target === controlBigger) {
-
     scaleValue.value = value < MAX_SCALE_VALUE ? `${value + SCALE_STEP}%` : `${MAX_SCALE_VALUE}%`;
-
   }
-
 
   picture.style.transform = `scale(${parseInt(scaleValue.value, 10)/100})`;
 
@@ -145,42 +140,38 @@ const clearUploadModal = () => {
 };
 
 
-const cancelButtonClickHandler = (evt) => {
+const closeUploadModal = () => {
+
+  overlayUpload.classList.add('hidden');
+  body.classList.remove('modal-open');
+  uploadForm.reset();
+  scale.removeEventListener('click', scaleControlHandler);
+  killUploadHandlers();
+  clearUploadModal();
+
+};
+
+const cancelUploadButtonClickHandler = (evt) => {
+  evt.preventDefault();
 
   closeOnCancelButton(evt, () => {
     closeUploadModal();
-
   });
 
 };
 
-const modalKeyupHandler = (evt) => {
+const modalUploadKeyupHandler = (evt) => {
+  evt.preventDefault();
 
   if (evt.target !== hashtag && evt.target !== description) {
 
     closeOnEsc(evt, () => {
       closeUploadModal();
-
     });
 
   }
 
 };
-
-
-function closeUploadModal() {
-
-  overlay.classList.add('hidden');
-  body.classList.remove('modal-open');
-  uploadForm.reset();
-
-  clearUploadModal();
-
-  document.removeEventListener('keyup', modalKeyupHandler);
-  cancelButtonElement.removeEventListener('click', cancelButtonClickHandler);
-  scale.removeEventListener('click', scaleControlHandler);
-
-}
 
 
 //validation
@@ -220,41 +211,31 @@ const unblockSubmitButton = () => {
 const setUploadFormSubmit = (onSuccess) => {
 
   uploadForm.addEventListener('submit', (evt) => {
-
     evt.preventDefault();
 
     FetchConfig.UPLOAD_CONFIG.body = new FormData(evt.target);
-
 
     const isValid = pristine.validate();
 
     if (isValid) {
       blockSubmitButton();
-      getData(
-
+      requestData(
         () => {
-
           createSuccessMessage();
           onSuccess();
-
           unblockSubmitButton();
         },
         () => {
-
           createErrorMessage();
-          closeUploadModal();
+          onSuccess();
           unblockSubmitButton();
 
         },
         ServerAdress.UPLOAD_URL,
         FetchConfig.UPLOAD_CONFIG
-
       );
-
     }
-
   });
-
 };
 
 
@@ -263,15 +244,11 @@ const addUserPreviewImg = () => {
 
   const file = loadPicture.files[0];
   const fileName = file.name.toLowerCase();
-
-
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
-
 
   if (matches) {
 
     const url = URL.createObjectURL(file);
-
     picture.src = url;
 
     effectPreviewS.forEach((preview) => {
@@ -279,9 +256,7 @@ const addUserPreviewImg = () => {
       preview.style.backgroundImage = `url(${url})`;
 
     });
-
   }
-
 };
 
 const loadImg = () => {
@@ -289,7 +264,7 @@ const loadImg = () => {
   loadPicture.addEventListener('change', () => {
 
     sliderControl.classList.add('hidden');
-    overlay.classList.remove('hidden');
+    overlayUpload.classList.remove('hidden');
     body.classList.add('modal-open');
 
     addUserPreviewImg();
@@ -298,12 +273,15 @@ const loadImg = () => {
 
     scale.addEventListener('click', scaleControlHandler);
 
-
-    document.addEventListener('keyup', modalKeyupHandler);
-    cancelButtonElement.addEventListener('click', cancelButtonClickHandler);
-
-
+    document.addEventListener('keyup', modalUploadKeyupHandler);
+    cancelUploadButtonElement.addEventListener('click', cancelUploadButtonClickHandler);
   });
 };
 
-export {loadImg, setUploadFormSubmit, closeUploadModal};
+export {
+  loadImg,
+  setUploadFormSubmit,
+  modalUploadKeyupHandler,
+  cancelUploadButtonClickHandler,
+  closeUploadModal
+};
