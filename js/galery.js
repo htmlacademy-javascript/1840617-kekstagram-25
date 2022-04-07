@@ -28,7 +28,6 @@ const filter = document.querySelector('.img-filters');
 
 const listFragment = document.createDocumentFragment();
 
-
 /// filtration
 const filtersForm = document.querySelector('.img-filters__form');
 const previewContainer = document.querySelector('.pictures');
@@ -43,7 +42,8 @@ const createPreviewPicture = (pictureInfo) => {
 
   listFragment.appendChild(previewElement);
 
-  previewElement.addEventListener('click', () => {
+  previewElement.addEventListener('click', (evt) => {
+    evt.preventDefault();
 
     showBigPicture(pictureInfo);
 
@@ -67,14 +67,11 @@ const clearPreviews = () => {
 const createGalery = (infoArray) => {
 
   clearPreviews();
-
-
   infoArray.forEach((infoObj) => {
 
     createPreviewPicture(infoObj);
 
   });
-
 
   previewList.appendChild(listFragment);
 
@@ -84,31 +81,22 @@ const createGalery = (infoArray) => {
 const filtration = (photoData) => {
 
   const btn = document.querySelector(`.${ACTIVE_CLASS}`);
-
   const data = photoData;
-
-
   let photos = data.slice(0);
 
   switch (btn.id) {
 
     case Filters.DEFAULT:
-
       photos = data;
       break;
 
-
     case Filters.RANDOM:
-
       photos = shuffleArray(photos).slice(0, MAX_PREVIEWS);
       break;
 
-
     case Filters.DISCUSSED:
-
       photos.sort((a, b) => b.comments.length - a.comments.length);
       break;
-
   }
 
   createGalery(photos);
@@ -120,14 +108,12 @@ const filterClickHandler = (evt) => {
   if (evt.target.type === TogleSelectors.TAGS.button) {
 
     filtersForm.querySelector(`.${ACTIVE_CLASS}`).classList.remove(ACTIVE_CLASS);
-
     evt.target.closest(TogleSelectors.TAGS.button).classList.add(ACTIVE_CLASS);
   }
 
 };
 
 const debounceHandler = (data) => debounce(() => filtration(data));
-
 
 const renderGalery = (photoInfo) => {
 

@@ -1,6 +1,8 @@
 import {removeElement, closeOnEsc} from './utils.js';
 import {body} from './data.js';
 
+const ALERT_SHOW_TIME = 2000;
+
 const AlertMessage = {
   FAIL:'Ошибка загрузки с сервера',
   FAIL_COLOR: '#c32a2a',
@@ -11,14 +13,13 @@ const Selectors = {
   SUCCESS: '.success',
 };
 
+
 const loadErrorMessageFragment = document.createDocumentFragment();
 const successMessageFragment = document.createDocumentFragment();
 
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 
-
-const ALERT_SHOW_TIME = 2000;
 
 const onEscKeyupErrorHandler = (evt) => closeOnEsc(evt, () => {
   removeElement(Selectors.ERR);
@@ -33,39 +34,29 @@ const onEscKeyupSuccessHandler = (evt) => closeOnEsc(evt, () => {
 const createErrorMessage = () => {
 
   const errorMessage = errorTemplate.cloneNode(true);
-
   loadErrorMessageFragment.appendChild(errorMessage);
-
   body.appendChild(loadErrorMessageFragment);
-
   const errorMessageElement = document.querySelector('.error');
-
   const errorButton = document.querySelector('.error__button');
-
   const innerError = document.querySelector('.error__inner');
 
   document.addEventListener('keyup', onEscKeyupErrorHandler);
-
-
   errorMessageElement.addEventListener('click', (evt) => {
 
     if (evt.target !==  innerError || evt.target === errorButton) {
 
       removeElement(Selectors.ERR);
       document.removeEventListener('keyup', onEscKeyupErrorHandler);
+
     }
   });
-
-
 };
 
 
 const createSuccessMessage = () => {
 
   const successMessage = successTemplate.cloneNode(true);
-
   successMessageFragment.appendChild(successMessage);
-
   body.appendChild(successMessageFragment);
 
   const successButton = document.querySelector('.success__button');
@@ -77,18 +68,14 @@ const createSuccessMessage = () => {
     if (evt.target !== successInner || evt.target === successButton) {
 
       removeElement(Selectors.SUCCESS);
-
+      document.removeEventListener('keyup', onEscKeyupSuccessHandler);
     }
-
   });
 
   document.addEventListener('keyup', onEscKeyupSuccessHandler);
-
-
 };
 
 const showAlert = (message, color) => {
-
 
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
@@ -101,7 +88,6 @@ const showAlert = (message, color) => {
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = color;
   alertContainer.style.color = '#ffffff';
-
   alertContainer.textContent = message;
 
   document.body.append(alertContainer);
@@ -109,7 +95,6 @@ const showAlert = (message, color) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
-
 };
 
 export {createErrorMessage, createSuccessMessage, showAlert, AlertMessage};
