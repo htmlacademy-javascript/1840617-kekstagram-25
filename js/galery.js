@@ -126,7 +126,7 @@ const filterClickHandler = (evt) => {
 
 };
 
-const debounceHandler = (data) => debounce(() => filtration(data), 500);
+const debounceHandler = (data) => debounce(() => filtration(data));
 
 
 const renderGalery = (photoInfo) => {
