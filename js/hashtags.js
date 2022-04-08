@@ -6,7 +6,7 @@ let errorMessage = '';
 
 const error = () => errorMessage;
 
-const validateHashtagHandler = (value) => {
+const validateHashtag = (value) => {
   errorMessage = '';
 
   const inputText = value.toLowerCase().trim();
@@ -62,4 +62,4 @@ const validateHashtagHandler = (value) => {
 };
 
 
-export {validateHashtagHandler, error};
+export {validateHashtag, error};

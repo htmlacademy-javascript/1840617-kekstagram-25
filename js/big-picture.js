@@ -28,8 +28,6 @@ const socialCaptionElement = pictureElement.querySelector('.social__caption');
 const likesCountElement = pictureElement.querySelector('.likes-count');
 const commentsCountDigitElement = pictureElement.querySelector('.comments-count');
 
-// create commentList
-
 const clearComments = () => {
 
   commentListElement.querySelectorAll('.social__comment').forEach((element) => {
@@ -63,7 +61,7 @@ let last = 0;
 let commentsLength;
 let commentsData;
 
-const clickLoadMessagesHandler = () => {
+const loadMessagesClickHandler = () => {
 
   if (first + DEFAULT_COUNTER < commentsLength) {
 
@@ -76,7 +74,7 @@ const clickLoadMessagesHandler = () => {
   if (first + DEFAULT_COUNTER >= commentsLength) {
 
     loadMessageButtonElement.classList.add('hidden');
-    loadMessageButtonElement.removeEventListener('click', clickLoadMessagesHandler);
+    loadMessageButtonElement.removeEventListener('click', loadMessagesClickHandler);
 
   }
 
@@ -103,7 +101,7 @@ const showComments = (commentsInfo) => {
     } else {
       last = DEFAULT_COUNTER;
       loadMessageButtonElement.classList.remove('hidden');
-      loadMessageButtonElement.addEventListener('click', clickLoadMessagesHandler);
+      loadMessageButtonElement.addEventListener('click', loadMessagesClickHandler);
     }
 
     const decline = numDecline(commentsLength, DeclineWords.SINGULAR, DeclineWords.PLURAL);
@@ -118,7 +116,7 @@ const cancelButtonClickHandler = (evt) => {
   evt.preventDefault();
 
   closeOnCancelButton(evt, () => {
-    closePreview(cancelButtonClickHandler, clickLoadMessagesHandler);
+    closePreview(cancelButtonClickHandler, loadMessagesClickHandler);
     clearComments();
   });
 };
@@ -129,7 +127,7 @@ const modalKeyupHandler = (evt) => {
   if (evt.target !== commentInputElement) {
 
     closeOnEsc(evt, () => {
-      closePreview(cancelButtonClickHandler, clickLoadMessagesHandler);
+      closePreview(cancelButtonClickHandler, loadMessagesClickHandler);
       clearComments();
     });
   }
@@ -162,6 +160,6 @@ export {
   showBigPicture,
   showComments,
   modalKeyupHandler,
-  clickLoadMessagesHandler,
+  loadMessagesClickHandler,
   cancelButtonClickHandler
 };
