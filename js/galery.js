@@ -25,10 +25,7 @@ const TogleSelectors = {
 const previewList = document.querySelector('.pictures');
 const previewTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const filter = document.querySelector('.img-filters');
-
 const listFragment = document.createDocumentFragment();
-
-/// filtration
 const filtersForm = document.querySelector('.img-filters__form');
 const previewContainer = document.querySelector('.pictures');
 
@@ -113,12 +110,12 @@ const filterClickHandler = (evt) => {
 
 };
 
-const debounceHandler = (data) => debounce(() => filtration(data));
+const filterDebounceClickHandler = (data) => debounce(() => filtration(data));
 
 const renderGalery = (photoInfo) => {
 
   filtersForm.addEventListener('click', filterClickHandler);
-  filtersForm.addEventListener('click', debounceHandler(photoInfo));
+  filtersForm.addEventListener('click', filterDebounceClickHandler(photoInfo));
 
   createGalery(photoInfo);
 

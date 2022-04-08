@@ -2,7 +2,7 @@ import {Buttons, body} from './data.js';
 import {
   modalKeyupHandler,
   cancelButtonClickHandler,
-  clickLoadMessagesHandler
+  loadMessagesClickHandler
 } from './big-picture.js';
 import {
   modalUploadKeyupHandler,
@@ -26,7 +26,7 @@ const closePreview = () => {
 
   cancelButtonElement.removeEventListener('click', cancelButtonClickHandler);
   document.removeEventListener('keyup', modalKeyupHandler);
-  loadMessageButtonElement.removeEventListener('click', clickLoadMessagesHandler);
+  loadMessageButtonElement.removeEventListener('click', loadMessagesClickHandler);
 
   overlayElement.classList.add('hidden');
   body.classList.remove('modal-open');

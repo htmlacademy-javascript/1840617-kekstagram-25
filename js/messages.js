@@ -21,14 +21,14 @@ const errorTemplate = document.querySelector('#error').content.querySelector('.e
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 
 
-const onEscKeyupErrorHandler = (evt) => closeOnEsc(evt, () => {
+const еrrorEscKeyupHandler = (evt) => closeOnEsc(evt, () => {
   removeElement(Selectors.ERR);
-  document.removeEventListener('keyup', onEscKeyupErrorHandler);
+  document.removeEventListener('keyup', еrrorEscKeyupHandler);
 });
 
-const onEscKeyupSuccessHandler = (evt) => closeOnEsc(evt, () => {
+const successEscKeyupHandler = (evt) => closeOnEsc(evt, () => {
   removeElement(Selectors.SUCCESS);
-  document.removeEventListener('keyup', onEscKeyupSuccessHandler);
+  document.removeEventListener('keyup', successEscKeyupHandler);
 });
 
 const createErrorMessage = () => {
@@ -37,16 +37,16 @@ const createErrorMessage = () => {
   loadErrorMessageFragment.appendChild(errorMessage);
   body.appendChild(loadErrorMessageFragment);
   const errorMessageElement = document.querySelector('.error');
-  const errorButton = document.querySelector('.error__button');
-  const innerError = document.querySelector('.error__inner');
+  const errorButton = errorMessage.querySelector('.error__button');
+  const innerError = errorMessage.querySelector('.error__inner');
 
-  document.addEventListener('keyup', onEscKeyupErrorHandler);
+  document.addEventListener('keyup', еrrorEscKeyupHandler);
   errorMessageElement.addEventListener('click', (evt) => {
 
     if (evt.target !==  innerError || evt.target === errorButton) {
 
       removeElement(Selectors.ERR);
-      document.removeEventListener('keyup', onEscKeyupErrorHandler);
+      document.removeEventListener('keyup', еrrorEscKeyupHandler);
 
     }
   });
@@ -59,20 +59,21 @@ const createSuccessMessage = () => {
   successMessageFragment.appendChild(successMessage);
   body.appendChild(successMessageFragment);
 
-  const successButton = document.querySelector('.success__button');
-  const successInner = document.querySelector('.success__inner');
   const successField = document.querySelector('.success');
+  const successButton = successField.querySelector('.success__button');
+  const successInner = successField.querySelector('.success__inner');
+
 
   successField.addEventListener('click', (evt) => {
 
     if (evt.target !== successInner || evt.target === successButton) {
 
       removeElement(Selectors.SUCCESS);
-      document.removeEventListener('keyup', onEscKeyupSuccessHandler);
+      document.removeEventListener('keyup', successEscKeyupHandler);
     }
   });
 
-  document.addEventListener('keyup', onEscKeyupSuccessHandler);
+  document.addEventListener('keyup', successEscKeyupHandler);
 };
 
 const showAlert = (message, color) => {

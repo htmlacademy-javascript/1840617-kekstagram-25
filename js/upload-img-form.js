@@ -1,6 +1,6 @@
 import {requestData} from './api.js';
 import {Effects, FetchConfig, ServerAdress, body} from './data.js';
-import {validateHashtagHandler, error} from './hashtags.js';
+import {validateHashtag, error} from './hashtags.js';
 import {createErrorMessage, createSuccessMessage} from './messages.js';
 import {
   closeOnCancelButton,
@@ -68,7 +68,6 @@ const scaleControlHandler = (evt) => {
 
 };
 
-//effects
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -120,7 +119,7 @@ effectsList.addEventListener('change', (evt) => {
   }
 });
 
-//close modal window
+
 const clearUploadModal = () => {
 
   const textError = document.querySelector('.img-upload__error');
@@ -131,11 +130,10 @@ const clearUploadModal = () => {
 
   }
 
-
+  picture.src = '';
   picture.style.transform = `scale(${DEFAULT_SCALE})`;
   picture.style.filter = 'none';
   originalFilter.checked = 'true';
-  document.querySelector('.img-upload__form').reset();
 
 };
 
@@ -174,7 +172,6 @@ const modalUploadKeyupHandler = (evt) => {
 };
 
 
-//validation
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__item',
   errorClass: 'img-upload__item--invalid',
@@ -185,7 +182,7 @@ const pristine = new Pristine(uploadForm, {
 });
 
 
-pristine.addValidator(hashtag, validateHashtagHandler, error, 2, false);
+pristine.addValidator(hashtag, validateHashtag, error, 2, false);
 
 const onHashtagInput = () => {
   pristine.validate();
@@ -193,7 +190,7 @@ const onHashtagInput = () => {
 
 hashtag.addEventListener('input', onHashtagInput());
 
-//upload data to server
+
 const blockSubmitButton = () => {
 
   submitButton.disabled = true;
@@ -239,7 +236,6 @@ const setUploadFormSubmit = (onSuccess) => {
 };
 
 
-//init
 const addUserPreviewImg = () => {
 
   const file = loadPicture.files[0];
